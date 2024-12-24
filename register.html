@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro - Mystic TCG</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Mystic TCG</h1>
+        <nav class="navbar">
+          <a href="index.html">Inicio</a>
+          <a href="productos.html">Productos</a>
+          <a href="contacto.html">Contacto</a>
+          <a href="nosotros.html">Nosotros</a>
+          <a href="carrito.html">Carrito</a>
+        </nav>
+        <div class="auth-buttons">
+          <a href="login.html" class="login-button">Iniciar Sesión</a>
+          <a href="register.html" class="register-button">Registrarse</a>
+        </div>
+    </header>
+
+<div class="container">
+  <h2>Registro</h2>
+  <form id="registerForm">
+    <label for="nickname">Apodo:</label>
+    <input type="text" id="nickname" required>
+    
+    <label for="registerEmail">Correo Electrónico:</label>
+    <input type="email" id="registerEmail" required>
+    
+    <label for="registerPassword">Contraseña:</label>
+    <input type="password" id="registerPassword" required>
+    
+    <label for="confirmPassword">Confirmar Contraseña:</label>
+    <input type="password" id="confirmPassword" required>
+    
+    <button type="submit">Registrarse</button>
+  </form>
+  <p>¿Ya tienes una cuenta? <a href="login.html">Inicia sesión aquí</a></p>
+</div>
+
+<footer>
+  <p>&copy; 2024 Mystic TCG. Todos los derechos reservados.</p>
+</footer>
+
+<script>
+  document.getElementById('registerForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Evita que el formulario se envíe automáticamente
+
+    // Obtén los valores de los campos del formulario
+    const nickname = document.getElementById('nickname').value;
+    const email = document.getElementById('registerEmail').value;
+    const password = document.getElementById('registerPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+
+    // Validación de contraseñas
+    if (password !== confirmPassword) {
+      alert('Las contraseñas no coinciden.');
+      return;
+    }
+
+    // Simulación de almacenamiento en localStorage
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    
+    // Verificar si el correo ya está registrado
+    if (users.some(user => user.email === email)) {
+      alert('Este correo ya está registrado.');
+      return;
+    }
+
+    // Crear el nuevo usuario
+    const newUser = { nickname, email, password };
+    users.push(newUser);
+
+    // Guardar el usuario en localStorage
+    localStorage.setItem('users', JSON.stringify(users));
+    localStorage.setItem('activeUser', JSON.stringify(newUser)); // Guardar como usuario activo
+
+    alert('Registro exitoso. Ahora puedes acceder a tu cuenta.');
+    window.location.href = 'usuario.html'; // Redirige a la página de usuario
+  });
+</script>
+</body>
+</html>

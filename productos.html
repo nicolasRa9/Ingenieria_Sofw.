@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productos - Mystic TCG</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Mystic TCG</h1>
+    <nav class="navbar">
+      <a href="index.html">Inicio</a>
+      <a href="productos.html">Productos</a>
+      <a href="contacto.html">Contacto</a>
+      <a href="nosotros.html">Nosotros</a>
+      <a href="carrito.html">Carrito</a>
+    </nav>
+    <div class="auth-buttons">
+      <a href="login.html" class="login-button">Iniciar Sesión</a>
+      <a href="register.html" class="register-button">Registrarse</a>
+    </div>
+  </header>
+
+<div class="container">
+  <h2>Nuestros Productos</h2>
+  <p>Explora nuestra colección exclusiva:</p>
+
+  <div class="products" id="productsContainer"></div>
+</div>
+
+<footer>
+  <p>&copy; 2024 Mystic TCG. Todos los derechos reservados.</p>
+</footer>
+
+<script>
+  // Datos de productos
+  const productos = [
+    { id: 'seth', img: 'img/Seth.png', name: 'Seth', price: 5000 },
+    { id: 'atenea', img: 'img/Atenea.png', name: 'Atenea', price: 7000 },
+    { id: 'yggdrasil', img: 'img/Yggdrasil.png', name: 'Yggdrasil', price: 3000 },
+    { id: 'lugh', img: 'img/Lugh.png', name: 'Lugh', price: 6000 }
+  ];
+
+  // Renderizar productos en el contenedor
+  const productsContainer = document.getElementById('productsContainer');
+  productos.forEach(producto => {
+    const productElement = document.createElement('div');
+    productElement.className = 'product';
+    productElement.innerHTML = `
+      <a href="carta.html?id=${producto.id}">
+        <img src="${producto.img}" alt="Carta de ${producto.name}">
+      </a>
+      <h3>${producto.name}</h3>
+      <p>$${producto.price}</p>
+      <button onclick="addToCart('${producto.id}', '${producto.name}', '${producto.img}', ${producto.price})">
+        Agregar al carrito
+      </button>
+    `;
+    productsContainer.appendChild(productElement);
+  });
+
+  // Función para agregar al carrito
+  function addToCart(id, name, img, price) {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const existingProduct = cart.find(item => item.id === id);
+
+    if (existingProduct) {
+      existingProduct.quantity += 1;
+    } else {
+      cart.push({ id, name, img, price, quantity: 1 });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    alert(`${name} se agregó al carrito.`);
+  }
+</script>
+</body>
+</html>

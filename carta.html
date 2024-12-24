@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle de Carta - Mystic TCG</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+  <h1>Mystic TCG</h1>
+  <nav class="navbar">
+    <a href="index.html">Inicio</a>
+    <a href="productos.html">Productos</a>
+    <a href="carrito.html">Carrito</a>
+    <a href="usuario.html">Mi Cuenta</a>
+  </nav>
+</header>
+
+<div class="container">
+  <h2 id="cardTitle">Cargando...</h2>
+  <img id="cardImage" src="" alt="Carta" class="card-image">
+  <p id="cardPrice">Cargando precio...</p>
+  <button id="addToCartButton">Agregar al carrito</button>
+</div>
+
+<footer>
+  <p>&copy; 2024 Mystic TCG. Todos los derechos reservados.</p>
+</footer>
+
+<script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get("id");
+
+    try {
+      const response = await fetch(`http://localhost:3000/products`);
+      const products = await response.json();
+      const product = products.find(p => p.id == productId);
+
+      document.getElementById("cardTitle").textContent = product.name;
+      document.getElementById("cardImage").src = product.image_url;
+      document.getElementById("cardPrice").textContent = `$${product.price}`;
+      document.getElementById("addToCartButton").onclick = () =>
+        addToCart(product.id, product.name, product.image_url, product.price);
+    } catch (error) {
+      console.error("Error cargando detalles de la carta:", error);
+    }
+  });
+
+  function addToCart(id, name, image_url, price) {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const existingProduct = cart.find(item => item.id === id);
+
+    if (existingProduct) {
+      existingProduct.quantity += 1;
+    } else {
+      cart.push({ id, name, image_url, price, quantity: 1 });
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    alert(`${name} se agregó al carrito.`);
+  }
+</script>
+</body>
+</html>

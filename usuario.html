@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usuario - Mystic TCG</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+  <h1>Mystic TCG</h1>
+  <nav class="navbar">
+    <a href="index.html">Inicio</a>
+    <a href="productos.html">Productos</a>
+    <a href="contacto.html">Contacto</a>
+    <a href="nosotros.html">Nosotros</a>
+    <a href="carrito.html">Carrito</a>
+    <a href="usuario.html">Mi Cuenta</a>
+  </nav>
+</header>
+
+<div class="container">
+  <h2>Mi Cuenta</h2>
+
+  <!-- Datos del Usuario -->
+  <div class="user-info">
+    <h3>Datos del Usuario</h3>
+    <p><strong>Apodo:</strong> <span id="userNickname">Cargando...</span></p>
+    <p><strong>Correo:</strong> <span id="userEmail">Cargando...</span></p>
+  </div>
+
+  <!-- Historial de Pedidos -->
+  <div class="order-history">
+    <h3>Historial de Pedidos</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>ID Pedido</th>
+          <th>Fecha</th>
+          <th>Productos</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody id="orderHistory">
+        <!-- Los pedidos se cargarán dinámicamente -->
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<footer>
+  <p>&copy; 2024 Mystic TCG. Todos los derechos reservados.</p>
+</footer>
+
+<script>
+  // Datos del usuario almacenados tras login o registro
+  const userData = JSON.parse(localStorage.getItem('user')) || {
+    nickname: "Invitado", // Apodo predeterminado
+    email: "correo@ejemplo.com" // Correo predeterminado
+  };
+
+  // Historial de pedidos simulado o cargado previamente
+  const orders = JSON.parse(localStorage.getItem('orders')) || [
+    {
+      id: "001",
+      date: "2024-12-01",
+      products: [
+        { name: "Seth", quantity: 1 },
+        { name: "Atenea", quantity: 2 }
+      ],
+      total: 19000
+    },
+    {
+      id: "002",
+      date: "2024-12-02",
+      products: [
+        { name: "Yggdrasil", quantity: 1 },
+        { name: "Lugh", quantity: 1 }
+      ],
+      total: 9000
+    }
+  ];
+
+  // Mostrar los datos del usuario
+  document.getElementById('userNickname').textContent = userData.nickname;
+  document.getElementById('userEmail').textContent = userData.email;
+
+  // Cargar historial de pedidos
+  const orderHistory = document.getElementById('orderHistory');
+  orders.forEach(order => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${order.id}</td>
+      <td>${order.date}</td>
+      <td>${order.products.map(p => `${p.name} x${p.quantity}`).join(", ")}</td>
+      <td>$${order.total}</td>
+    `;
+    orderHistory.appendChild(row);
+  });
+</script>
+</body>
+</html>

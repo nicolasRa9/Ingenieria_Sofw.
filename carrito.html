@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrito - Mystic TCG</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+  <h1>Mystic TCG</h1>
+  <nav class="navbar">
+    <a href="index.html">Inicio</a>
+    <a href="productos.html">Productos</a>
+    <a href="contacto.html">Contacto</a>
+    <a href="nosotros.html">Nosotros</a>
+    <a href="carrito.html">Carrito</a>
+  </nav>
+  <div class="auth-buttons">
+    <a href="login.html" class="login-button">Iniciar Sesión</a>
+    <a href="register.html" class="register-button">Registrarse</a>
+  </div>
+</header>
+
+
+<div class="container">
+  <h2>Carrito de Compras</h2>
+  <div class="cart" id="cartContainer"></div>
+  <h3>Total: $<span id="cartTotal">0</span></h3>
+  <button onclick="checkout()">Proceder al Pago</button>
+</div>
+
+<footer>
+  <p>&copy; 2024 Mystic TCG. Todos los derechos reservados.</p>
+</footer>
+
+<script>
+  const cartContainer = document.getElementById('cartContainer');
+  const cartTotal = document.getElementById('cartTotal');
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+  function renderCart() {
+    cartContainer.innerHTML = '';
+    let total = 0;
+
+    cart.forEach((item, index) => {
+      const cartItem = document.createElement('div');
+      cartItem.className = 'cart-item';
+      cartItem.innerHTML = `
+        <a href="carta.html?id=${item.id}">
+          <img src="${item.img}" alt="${item.name}">
+        </a>
+        <h3>${item.name}</h3>
+        <p>Cantidad: <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity(${index}, this.value)">
+        </p>
+        <p>Precio: $${item.price * item.quantity}</p>
+        <button onclick="removeItem(${index})">Eliminar</button>
+      `;
+      cartContainer.appendChild(cartItem);
+      total += item.price * item.quantity;
+    });
+
+    cartTotal.textContent = total;
+  }
+
+  function updateQuantity(index, quantity) {
+    cart[index].quantity = parseInt(quantity);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    renderCart();
+  }
+
+  function removeItem(index) {
+    cart.splice(index, 1);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    renderCart();
+  }
+
+  function checkout() {
+    if (cart.length > 0) {
+      alert('Gracias por tu compra!');
+      localStorage.removeItem('cart');
+      renderCart();
+    } else {
+      alert('Tu carrito está vacío.');
+    }
+  }
+
+  renderCart();
+</script>
+</body>
+</html>
